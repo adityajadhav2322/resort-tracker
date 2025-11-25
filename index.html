@@ -2,154 +2,214 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Resort Sales ✨</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Resort Booking ✨</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
     <style>
         body { 
             font-family: 'Quicksand', sans-serif; 
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
             -webkit-tap-highlight-color: transparent;
+            /* iOS Safe Area Support */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            min-height: 100vh;
         }
         .glass-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px); /* Safari support */
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
         .cute-input {
-            background: white;
-            border: 2px solid #ffe4e6;
-            color: #881337;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #e0e7ff;
+            color: #4f46e5;
             transition: all 0.3s ease;
+            /* iOS Input Style Reset */
+            -webkit-appearance: none;
+            border-radius: 1rem; 
         }
         .cute-input:focus {
             outline: none;
-            border-color: #fb7185;
-            box-shadow: 0 0 0 4px rgba(251, 113, 133, 0.1);
+            border-color: #a855f7;
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
         }
-        .btn-bounce:active { transform: scale(0.95); }
-        .pink-gradient { background: linear-gradient(to right, #fb7185, #db2777); }
+        .btn-press:active { transform: scale(0.97); }
+        .luxury-gradient { background: linear-gradient(to right, #8b5cf6, #3b82f6); }
+        
+        /* Fix for iOS Select dropdown arrow */
+        select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+        }
     </style>
 </head>
-<body class="h-screen flex flex-col items-center justify-center p-4 bg-gradient-to-br from-rose-50 to-pink-100 text-gray-700">
+<body class="flex flex-col items-center justify-center p-4 text-gray-700">
 
     <!-- CONFIG -->
     <script>
-        const API_URL = "PASTE_HER_WEB_APP_URL_HERE"; 
+        // PASTE HER GOOGLE SCRIPT URL HERE
+        const API_URL = "YOUR_GOOGLE_SCRIPT_URL_HERE"; 
         const APP_PIN = "2025"; 
     </script>
 
     <!-- MAIN CARD -->
-    <div class="glass-card w-full max-w-md p-8 rounded-3xl space-y-6 relative overflow-hidden">
+    <div class="glass-card w-full max-w-md p-8 rounded-[2rem] space-y-5 relative overflow-hidden shadow-2xl">
         
-        <!-- Decoration -->
-        <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-300 rounded-full opacity-20 blur-xl"></div>
-        <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-rose-300 rounded-full opacity-20 blur-xl"></div>
-
         <!-- Header -->
-        <div class="text-center relative z-10">
-            <h1 class="text-3xl font-bold text-rose-600 mb-1">Resort Sales <span class="text-2xl">🍹</span></h1>
-            <p class="text-xs text-rose-400 font-bold uppercase tracking-widest">Daily Tracker</p>
+        <div class="text-center relative z-10 mb-2">
+            <div class="inline-block p-3 rounded-full bg-white/50 mb-3 shadow-sm">
+                <i class="fa-solid fa-hotel text-3xl text-indigo-500"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-indigo-900">Room Booking</h1>
+            <p class="text-xs text-indigo-400 font-bold uppercase tracking-widest mt-1">Daily Sales Tracker</p>
         </div>
 
         <!-- Form -->
         <div class="space-y-4 relative z-10">
             
-            <!-- Category & Payment Row -->
-            <div class="grid grid-cols-2 gap-3">
-                <select id="category" class="cute-input w-full p-3 rounded-2xl appearance-none font-bold text-sm">
-                    <option value="Food">🍔 Food</option>
-                    <option value="Drink">🍹 Drink</option>
-                    <option value="Spa">💆‍♀️ Spa</option>
-                    <option value="Activity">🏄‍♀️ Activity</option>
-                    <option value="Room">🛏️ Room</option>
-                </select>
-
-                <select id="payment" class="cute-input w-full p-3 rounded-2xl appearance-none font-bold text-sm">
-                    <option value="Cash">💵 Cash</option>
-                    <option value="Card">💳 Card</option>
-                    <option value="Online">📱 UPI</option>
-                    <option value="RoomCharge">🏨 Charge</option>
-                </select>
-            </div>
-
-            <!-- Item Name -->
+            <!-- Room Selector -->
             <div>
-                <input type="text" id="item" class="cute-input w-full p-4 rounded-2xl text-lg placeholder-rose-300" placeholder="What did they buy?">
+                <label class="text-xs font-bold text-indigo-400 uppercase ml-2 mb-1 block">Select Room</label>
+                <div class="relative">
+                    <select id="roomSelect" class="cute-input w-full p-4 pl-4 rounded-2xl text-sm font-bold">
+                        <option value="" disabled selected>Choose a Villa...</option>
+                        <option value="Executive Room">Executive Room</option>
+                        <option value="Private Cottage">Private Cottage 🏡</option>
+                        <option value="Red Roof Villa (4BHK)">Red Roof Villa (4BHK) 🏠</option>
+                        <option value="Glass House Villa (4BHK)">Glass House Villa (4BHK) 💎</option>
+                        <option value="Brown Villa Deluxe (2BHK)">Brown Villa Deluxe (2BHK) 🪵</option>
+                        <option value="Brown Villa Deluxe (4BHK)">Brown Villa Deluxe (4BHK) 🪵</option>
+                    </select>
+                </div>
             </div>
 
-            <!-- Amount -->
-            <div class="relative">
-                <span class="absolute left-4 top-4 text-rose-400 font-bold">₹</span>
-                <input type="number" id="amount" class="cute-input w-full p-4 pl-10 rounded-2xl text-xl font-bold placeholder-rose-300" placeholder="0.00">
+            <!-- Booking Date -->
+            <div>
+                <label class="text-xs font-bold text-indigo-400 uppercase ml-2 mb-1 block">Check-in Date</label>
+                <div class="relative">
+                    <input type="date" id="bookingDate" class="cute-input w-full p-4 pl-4 rounded-2xl text-md font-bold text-indigo-600">
+                </div>
+            </div>
+
+            <!-- Guest Name -->
+            <div>
+                <label class="text-xs font-bold text-indigo-400 uppercase ml-2 mb-1 block">Guest Name</label>
+                <div class="relative">
+                    <input type="text" id="guestName" class="cute-input w-full p-4 pl-4 rounded-2xl text-md font-bold placeholder-indigo-200" placeholder="e.g. Mr. Sharma">
+                </div>
+            </div>
+
+            <!-- Payment Method & Amount Row -->
+            <div class="grid grid-cols-2 gap-3">
+                <!-- Payment -->
+                <div>
+                    <label class="text-xs font-bold text-indigo-400 uppercase ml-2 mb-1 block">Payment</label>
+                    <select id="payment" class="cute-input w-full p-3 rounded-2xl font-bold text-sm">
+                        <option value="Online">📱 UPI</option>
+                        <option value="Cash">💵 Cash</option>
+                        <option value="Card">💳 Card</option>
+                        <option value="Credit">🏨 Credit</option>
+                    </select>
+                </div>
+
+                <!-- Amount -->
+                <div>
+                    <label class="text-xs font-bold text-indigo-400 uppercase ml-2 mb-1 block">Amount</label>
+                    <div class="relative">
+                        <span class="absolute left-3 top-3 text-indigo-400 font-bold">₹</span>
+                        <input type="number" id="amount" class="cute-input w-full p-3 pl-8 rounded-2xl text-lg font-bold placeholder-indigo-200" placeholder="0">
+                    </div>
+                </div>
             </div>
 
             <!-- Button -->
-            <button onclick="submitSale()" id="submitBtn" class="w-full pink-gradient text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-rose-200 btn-bounce flex justify-center items-center gap-2 transition-all hover:shadow-xl">
-                <span>Add Sale</span>
-                <i class="fa-solid fa-sparkles"></i>
+            <button onclick="submitBooking()" id="submitBtn" class="w-full luxury-gradient text-white py-4 rounded-2xl font-bold text-lg shadow-lg shadow-indigo-200 btn-press flex justify-center items-center gap-2 transition-all mt-4">
+                <span>Confirm Booking</span>
+                <i class="fa-solid fa-check-circle"></i>
             </button>
 
         </div>
     </div>
 
-    <!-- Notification -->
-    <div id="toast" class="fixed top-6 bg-white text-rose-600 px-6 py-3 rounded-full shadow-xl z-50 transition-all duration-300 transform -translate-y-20 opacity-0 flex items-center gap-2 font-bold border border-rose-100">
-        <i class="fa-solid fa-check-circle"></i>
-        <span id="toastMsg">Saved!</span>
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-12 bg-white/90 backdrop-blur-md text-indigo-600 px-6 py-4 rounded-2xl shadow-xl z-50 transition-all duration-300 transform -translate-y-40 opacity-0 flex items-center gap-3 font-bold border border-indigo-50">
+        <div class="bg-green-100 p-2 rounded-full">
+            <i class="fa-solid fa-check text-green-500"></i>
+        </div>
+        <div>
+            <p class="text-sm text-gray-800">Booking Saved!</p>
+            <p class="text-xs text-indigo-400" id="toastDetail">Have a great day ✨</p>
+        </div>
     </div>
 
     <script>
-        async function submitSale() {
-            const btn = document.getElementById('submitBtn');
-            const item = document.getElementById('item').value;
-            const amount = document.getElementById('amount').value;
-            
-            if (!item || !amount) return showToast("Please fill details! 🌸");
+        // Set default date to today
+        document.getElementById('bookingDate').valueAsDate = new Date();
 
-            // Animation State
+        async function submitBooking() {
+            const btn = document.getElementById('submitBtn');
+            const room = document.getElementById('roomSelect').value;
+            const guest = document.getElementById('guestName').value;
+            const amount = document.getElementById('amount').value;
+            const payment = document.getElementById('payment').value;
+            const date = document.getElementById('bookingDate').value;
+            
+            if (!room || !amount || !guest || !date) return showToast("Please fill all details! 🌸", true);
+
+            // Animation
+            const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
-            btn.classList.add('opacity-75');
+            btn.classList.add('opacity-75', 'pointer-events-none');
+
+            const itemString = `${room} - ${guest} (Check-in: ${date})`;
 
             const payload = {
                 action: 'add',
-                category: document.getElementById('category').value,
-                payment: document.getElementById('payment').value,
-                item: item,
+                category: 'Room Booking',
+                item: itemString,
                 amount: amount,
+                payment: payment,
                 pin: APP_PIN
             };
 
             try {
-                // Sending to Google Script
                 await fetch(API_URL, {
                     method: "POST",
                     body: JSON.stringify(payload)
                 });
 
-                // Success
-                showToast("Sale Added Successfully! ✨");
-                document.getElementById('item').value = '';
+                showToast("Booking Confirmed! 🥂", false);
+                
+                document.getElementById('guestName').value = '';
                 document.getElementById('amount').value = '';
+                document.getElementById('roomSelect').value = '';
                 
             } catch (e) {
-                showToast("Oops, something went wrong 🥺");
+                showToast("Connection Error 🥺", true);
             }
 
-            // Reset Button
-            btn.innerHTML = '<span>Add Sale</span><i class="fa-solid fa-sparkles"></i>';
-            btn.classList.remove('opacity-75');
+            btn.innerHTML = originalText;
+            btn.classList.remove('opacity-75', 'pointer-events-none');
         }
 
-        function showToast(msg) {
+        function showToast(msg, isError) {
             const toast = document.getElementById('toast');
-            document.getElementById('toastMsg').innerText = msg;
-            toast.classList.remove('-translate-y-20', 'opacity-0');
+            document.querySelector('#toast p').innerText = isError ? "Oops!" : msg;
+            document.getElementById('toastDetail').innerText = isError ? "Check details & try again." : "Saved to Cloud Sheet.";
+            
+            toast.classList.remove('-translate-y-40', 'opacity-0');
             setTimeout(() => {
-                toast.classList.add('-translate-y-20', 'opacity-0');
+                toast.classList.add('-translate-y-40', 'opacity-0');
             }, 3000);
         }
     </script>
